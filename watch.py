@@ -3,12 +3,10 @@ from pathlib import Path
 import os, sys, time
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
-
 def set_system_volume(volume):
     os_name = sys.platform
     if os_name == 'win32':
-        set_vol_path = os.path.join(BASE_DIR, 'SetVol.exe')
-        print(set_vol_path)
+        set_vol_path = os.path.join(os.path.join(BASE_DIR, 'SetVol'), 'SetVol.exe')
         os.system(f"{set_vol_path} setvol {volume}")
     elif os_name == 'linux':
         os.system(f"pactl set-sink-volume 1 {volume}%")
