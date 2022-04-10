@@ -1,1 +1,0 @@
-{"top": 85, "left": 255, "width": 110, "height": 90}
