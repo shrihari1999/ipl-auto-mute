@@ -15,7 +15,7 @@ def set_system_volume(volume):
         os.system(f"pactl set-sink-volume 1 {volume}%")
 
 box = {"top": 85, "left": 255, "width": 110, "height": 90}
-labels = ['ipl', 'kkr', 'lsg', 'pbks', 'rr', 'srh']
+labels = ['csk', 'dc', 'gt', 'ipl', 'kkr', 'lsg', 'mi', 'pbks', 'rcb', 'rr', 'srh']
 img_size = 90
 model = keras.models.load_model('./ipl_model')
 
@@ -54,8 +54,8 @@ with mss() as sct:
 # time.sleep(5)
 # with mss() as sct:
 #     monitor = sct.monitors[0]
-#     for i in range(0, 60):
+#     for i in range(0, 300):
 #         sct_img = sct.grab(box)
-#         mss_tools.to_png(sct_img.rgb, sct_img.size, output=f"result{i+1}.png")
-#         time.sleep(2)
+#         mss_tools.to_png(sct_img.rgb, sct_img.size, output=os.path.join(os.path.join(BASE_DIR, 'results'), f"result{i+1}.png"))
+#         time.sleep(1)
 #     set_system_volume(0)
