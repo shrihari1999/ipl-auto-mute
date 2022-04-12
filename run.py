@@ -4,8 +4,8 @@ OS_NAME = sys.platform
 
 VENV_PATH = os.environ.get("VIRTUAL_ENV")
 if not VENV_PATH:
-    print('venv not activated!!! Activating venv... Please run "python run.py" again.')
-    os.system('pipenv shell')
+    print('venv not activated!!! Run "pipenv shell"')
+    exit()
 
 if OS_NAME == 'win32':
     PYTHON_PATH = os.path.join(os.path.join(VENV_PATH, 'Scripts'), 'python.exe')
