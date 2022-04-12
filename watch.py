@@ -4,14 +4,14 @@ from tensorflow import keras
 from collections import deque
 import os, sys, time, cv2, numpy as np
 
+OS_NAME = sys.platform
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 
 def set_system_volume(volume):
-    os_name = sys.platform
-    if os_name == 'win32':
+    if OS_NAME == 'win32':
         set_vol_path = os.path.join(os.path.join(BASE_DIR, 'SetVol'), 'SetVol.exe')
         os.system(f"{set_vol_path} setvol {volume}")
-    elif os_name == 'linux':
+    elif OS_NAME == 'linux':
         os.system(f"pactl set-sink-volume 1 {volume}%")
 
 box = {"top": 85, "left": 255, "width": 110, "height": 90}
