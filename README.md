@@ -5,7 +5,7 @@ Mute IPL advertisements automatically on Hotstar.
 
 ### Install System Level Dependencies
 
- 1. Python3.7 64-bit or above. (This program uses tensorflow, please refer to https://www.tensorflow.org/install/pip#system-requirements for detailed requirements).
+ 1. Python 3.7 64-bit or above. (This program uses tensorflow, please refer to https://www.tensorflow.org/install/pip#system-requirements for detailed requirements).
  2. pipenv
 
 ### Run the program
