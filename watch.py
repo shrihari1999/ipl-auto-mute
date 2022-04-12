@@ -15,7 +15,7 @@ def set_system_volume(volume):
         os.system(f"pactl set-sink-volume 1 {volume}%")
 
 box = {"top": 85, "left": 255, "width": 110, "height": 90}
-labels = ['csk', 'dc', 'gt', 'ipl', 'kkr', 'lsg', 'mi', 'pbks', 'rcb', 'rr', 'srh']
+# labels = ['csk', 'dc', 'gt', 'ipl', 'kkr', 'lsg', 'mi', 'pbks', 'rcb', 'rr', 'srh']
 img_size = 90
 model = keras.models.load_model('./ipl_model')
 
@@ -41,16 +41,17 @@ with mss() as sct:
                     if muted:
                         set_system_volume(50)
                         muted = False
-                    print('logo', max(predictions))
+                    # print('logo', max(predictions))
                 else:
                     if not muted:
                         set_system_volume(0)
                         muted = True
-                    print('break', max(predictions))
+                    # print('break', max(predictions))
         else:
             max_reached = len(prediction_queue) == prediction_queue.maxlen
         time.sleep(0.5)
 
+# Used for gethering dataset
 # time.sleep(5)
 # with mss() as sct:
 #     monitor = sct.monitors[0]
