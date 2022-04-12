@@ -23,7 +23,9 @@ muted = False
 prediction_queue = deque(maxlen=2)
 max_reached = False
 
+print('Waiting 5 secs, open the hotstar window in full screen.')
 time.sleep(5)
+print('Program is active. Sit back, relax and enjoy the game!')
 with mss() as sct:
     while True:
         sct_img = sct.grab(box)
