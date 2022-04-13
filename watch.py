@@ -20,7 +20,7 @@ img_size = 90
 model = keras.models.load_model('./ipl_model')
 
 muted = False
-prediction_queue = deque(maxlen=2)
+prediction_queue = deque(maxlen=3)
 max_reached = False
 
 print('Waiting 5 secs, open the hotstar window in full screen.')
@@ -36,22 +36,22 @@ with mss() as sct:
         x_val = np.array([resized_arr]) / 255
         x_val.reshape(-1, img_size, img_size, 1)
         predictions = model.predict(x_val)[0]
-        prediction_queue.append(max(predictions) > 0.9)
+        prediction_queue.append(predictions[0] > predictions[1])
         if max_reached:
             if len(set(prediction_queue)) == 1:
                 if prediction_queue[0]:
                     if muted:
                         set_system_volume(50)
                         muted = False
-                    # print('logo', max(predictions))
+                    # print('logo', predictions)
                 else:
                     if not muted:
                         set_system_volume(0)
                         muted = True
-                    # print('break', max(predictions))
+                    # print('break', predictions)
         else:
             max_reached = len(prediction_queue) == prediction_queue.maxlen
-        time.sleep(0.5)
+        time.sleep(0.1)
 
 # Used for gethering dataset
 # time.sleep(5)
