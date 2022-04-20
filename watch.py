@@ -6,6 +6,8 @@ import os, sys, time, cv2, numpy as np
 
 OS_NAME = sys.platform
 BASE_DIR = Path(__file__).resolve(strict=True).parent
+MODEL_MONITOR_DIMENSIONS = {'width': 1440, 'height': 900}
+MODEL_MONITOR_BOX = {'top': 85, 'left': 255, 'width': 110, 'height': 90}
 
 def set_system_volume(volume):
     if OS_NAME == 'win32':
@@ -14,7 +16,6 @@ def set_system_volume(volume):
     elif OS_NAME == 'linux':
         os.system(f"pactl set-sink-volume 1 {volume}%")
 
-box = {"top": 85, "left": 255, "width": 110, "height": 90}
 # labels = ['csk', 'dc', 'gt', 'ipl', 'kkr', 'lsg', 'mi', 'pbks', 'rcb', 'rr', 'srh']
 img_size = 90
 model = keras.models.load_model('./ipl_model')
@@ -27,8 +28,18 @@ print('Waiting 5 secs, open the hotstar window in full screen.')
 time.sleep(5)
 print('Program is active. Sit back, relax and enjoy the game!')
 with mss() as sct:
+    monitor = sct.monitors[0]
+    height_correction = -35 if monitor['width'] / monitor['height'] > 1.7 else 0
+    width_factor = monitor['width']+height_correction / MODEL_MONITOR_DIMENSIONS['width']
+    height_factor = monitor['height']+height_correction / MODEL_MONITOR_DIMENSIONS['height']
+    client_monitor_box = {
+        'top': round(height_factor * MODEL_MONITOR_BOX['top']) + monitor['top'],
+        'left': round(width_factor * MODEL_MONITOR_BOX['left']) + monitor['left'],
+        'width': round(width_factor * MODEL_MONITOR_BOX['width']),
+        'height': round(height_factor * MODEL_MONITOR_BOX['height'])
+    }
     while True:
-        sct_img = sct.grab(box)
+        sct_img = sct.grab(client_monitor_box)
         png = mss_tools.to_png(sct_img.rgb, sct_img.size)
         nparr = np.frombuffer(png, np.uint8)
         img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)[...,::-1] #convert BGR to RGB format
@@ -57,8 +68,18 @@ with mss() as sct:
 # time.sleep(5)
 # with mss() as sct:
 #     monitor = sct.monitors[0]
+#     height_correction = -35 if monitor['width'] / monitor['height'] > 1.7 else 0
+#     width_factor = monitor['width']+height_correction / MODEL_MONITOR_DIMENSIONS['width']
+#     height_factor = monitor['height']+height_correction / MODEL_MONITOR_DIMENSIONS['height']
+#     client_monitor_box = {
+#         'top': round(height_factor * MODEL_MONITOR_BOX['top']) + monitor['top'],
+#         'left': round(width_factor * MODEL_MONITOR_BOX['left']) + monitor['left'],
+#         'width': round(width_factor * MODEL_MONITOR_BOX['width']),
+#         'height': round(height_factor * MODEL_MONITOR_BOX['height'])
+#     }
+#     print(client_monitor_box)
 #     for i in range(0, 300):
-#         sct_img = sct.grab(box)
+#         sct_img = sct.grab(client_monitor_box)
 #         mss_tools.to_png(sct_img.rgb, sct_img.size, output=os.path.join(os.path.join(BASE_DIR, 'results'), f"result{i+1}.png"))
 #         time.sleep(1)
 #     set_system_volume(0)
