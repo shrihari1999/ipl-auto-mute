@@ -30,8 +30,8 @@ print('Program is active. Sit back, relax and enjoy the game!')
 with mss() as sct:
     monitor = sct.monitors[0]
     height_correction = -35 if monitor['width'] / monitor['height'] > 1.7 else 0
-    width_factor = monitor['width']+height_correction / MODEL_MONITOR_DIMENSIONS['width']
-    height_factor = monitor['height']+height_correction / MODEL_MONITOR_DIMENSIONS['height']
+    width_factor = (monitor['width']+height_correction) / MODEL_MONITOR_DIMENSIONS['width']
+    height_factor = (monitor['height']+height_correction) / MODEL_MONITOR_DIMENSIONS['height']
     client_monitor_box = {
         'top': round(height_factor * MODEL_MONITOR_BOX['top']) + monitor['top'],
         'left': round(width_factor * MODEL_MONITOR_BOX['left']) + monitor['left'],
@@ -69,8 +69,8 @@ with mss() as sct:
 # with mss() as sct:
 #     monitor = sct.monitors[0]
 #     height_correction = -35 if monitor['width'] / monitor['height'] > 1.7 else 0
-#     width_factor = monitor['width']+height_correction / MODEL_MONITOR_DIMENSIONS['width']
-#     height_factor = monitor['height']+height_correction / MODEL_MONITOR_DIMENSIONS['height']
+#     width_factor = (monitor['width']+height_correction) / MODEL_MONITOR_DIMENSIONS['width']
+#     height_factor = (monitor['height']+height_correction) / MODEL_MONITOR_DIMENSIONS['height']
 #     client_monitor_box = {
 #         'top': round(height_factor * MODEL_MONITOR_BOX['top']) + monitor['top'],
 #         'left': round(width_factor * MODEL_MONITOR_BOX['left']) + monitor['left'],
