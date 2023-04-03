@@ -7,14 +7,30 @@ import os, sys, time, cv2, numpy as np
 OS_NAME = sys.platform
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 MODEL_MONITOR_DIMENSIONS = {'width': 1440, 'height': 900}
-MODEL_MONITOR_BOX = {'top': 85, 'left': 255, 'width': 110, 'height': 90}
+MODEL_MONITOR_BOXES = {
+    'hotstar': {'top': 85, 'left': 255, 'width': 110, 'height': 90},
+    'jio': {'top': 85, 'left': 75, 'width': 110, 'height': 90},
+}
 
-def set_system_volume(volume):
+# get args
+args = sys.argv[1:]
+if len(args) == 0:
+    print('Please provide the name of platform. Available platforms: ', MODEL_MONITOR_BOXES.keys())
+    exit()
+
+platform = args[0]
+if platform not in MODEL_MONITOR_BOXES.keys():
+    print('Invalid platform. Available platforms: ', MODEL_MONITOR_BOXES.keys())
+    exit()
+
+MODEL_MONITOR_BOX = MODEL_MONITOR_BOXES[platform]
+
+def set_system_mute(muted):
     if OS_NAME == 'win32':
         set_vol_path = os.path.join(os.path.join(BASE_DIR, 'SetVol'), 'SetVol.exe')
-        os.system(f"{set_vol_path} setvol {volume}")
+        os.system(f"{set_vol_path} setvol {'un' if muted else ''}mute")
     elif OS_NAME == 'linux':
-        os.system(f"pactl set-sink-volume 1 {volume}%")
+        os.system(f"pactl set-sink-mute @DEFAULT_SINK@ {str(muted).lower()}")
 
 # labels = ['csk', 'dc', 'gt', 'ipl', 'kkr', 'lsg', 'mi', 'pbks', 'rcb', 'rr', 'srh']
 img_size = 90
@@ -24,7 +40,7 @@ muted = False
 prediction_queue = deque(maxlen=3)
 max_reached = False
 
-print('Waiting 5 secs, open the hotstar window in full screen.')
+print('Waiting 5 secs, open the match window in full screen.')
 time.sleep(5)
 print('Program is active. Sit back, relax and enjoy the game!')
 with mss() as sct:
@@ -52,13 +68,13 @@ with mss() as sct:
             if len(set(prediction_queue)) == 1:
                 if prediction_queue[0]:
                     if muted:
-                        set_system_volume(50)
                         muted = False
+                        set_system_mute(muted)
                     # print('logo', predictions)
                 else:
                     if not muted:
-                        set_system_volume(0)
                         muted = True
+                        set_system_mute(muted)
                     # print('break', predictions)
         else:
             max_reached = len(prediction_queue) == prediction_queue.maxlen

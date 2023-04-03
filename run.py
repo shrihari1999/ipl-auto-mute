@@ -12,4 +12,7 @@ if OS_NAME == 'win32':
 elif OS_NAME == 'linux':
     PYTHON_PATH = os.path.join(os.path.join(VENV_PATH, 'bin'), 'python')
 
-os.system(f"{PYTHON_PATH} watch.py")
+# forward args from run.py to watch.py
+args = ' '.join(sys.argv[1:])
+
+os.system(f"{PYTHON_PATH} watch.py {args}")
