@@ -28,7 +28,7 @@ MODEL_MONITOR_BOX = MODEL_MONITOR_BOXES[platform]
 def set_system_mute(muted):
     if OS_NAME == 'win32':
         set_vol_path = os.path.join(os.path.join(BASE_DIR, 'SetVol'), 'SetVol.exe')
-        os.system(f"{set_vol_path} setvol {'un' if muted else ''}mute")
+        os.system(f"{set_vol_path} setvol {'' if muted else 'un'}mute")
     elif OS_NAME == 'linux':
         os.system(f"pactl set-sink-mute @DEFAULT_SINK@ {str(muted).lower()}")
 
@@ -37,6 +37,7 @@ img_size = 90
 model = keras.models.load_model('./ipl_model')
 
 muted = False
+set_system_mute(muted)
 prediction_queue = deque(maxlen=3)
 max_reached = False
 

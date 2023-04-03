@@ -19,7 +19,8 @@ If you're running the program for the first time, install required dependencies 
 pipenv install
 ```
 
-Run the program
+Run the program, pass program as arg. Available platforms: hotstar, jio
 ```
-python run.py
+# python run.py <patform>
+python run.py hotstar
 ```
