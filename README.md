@@ -1,5 +1,5 @@
 # ipl-auto-mute
-Mute IPL advertisements automatically on Hotstar.
+Mute IPL advertisements automatically on online platforms.
 
 ## Getting Started
 
@@ -21,6 +21,6 @@ pipenv install
 
 Run the program, pass program as arg. Available platforms: hotstar, jio
 ```
-# python run.py <patform>
-python run.py hotstar
+# python run.py <platform>
+python run.py jio
 ```
