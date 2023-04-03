@@ -15,12 +15,12 @@ MODEL_MONITOR_BOXES = {
 # get args
 args = sys.argv[1:]
 if len(args) == 0:
-    print('Please provide the name of platform. Available platforms: ', MODEL_MONITOR_BOXES.keys())
+    print('Please provide the name of platform. Available platforms: ', ', '.join(MODEL_MONITOR_BOXES.keys()))
     exit()
 
 platform = args[0]
 if platform not in MODEL_MONITOR_BOXES.keys():
-    print('Invalid platform. Available platforms: ', MODEL_MONITOR_BOXES.keys())
+    print('Invalid platform. Available platforms: ', ', '.join(MODEL_MONITOR_BOXES.keys()))
     exit()
 
 MODEL_MONITOR_BOX = MODEL_MONITOR_BOXES[platform]
