@@ -8,8 +8,13 @@ OS_NAME = sys.platform
 BASE_DIR = Path(__file__).resolve(strict=True).parent
 MODEL_MONITOR_DIMENSIONS = {'width': 1440, 'height': 900}
 MODEL_MONITOR_BOXES = {
-    'hotstar': {'top': 85, 'left': 255, 'width': 110, 'height': 90},
-    'jio': {'top': 85, 'left': 75, 'width': 110, 'height': 90},
+    'hotstar': {
+        'ipl': {'top': 85, 'left': 255, 'width': 110, 'height': 90},
+        'wc': {'top': 85, 'left': 85, 'width': 110, 'height': 90}
+    },
+    'jio': {
+        'ipl': {'top': 85, 'left': 75, 'width': 110, 'height': 90}
+    },
 }
 
 # get args
@@ -18,12 +23,16 @@ if len(args) == 0:
     print('Please provide the name of platform. Available platforms: ', ', '.join(MODEL_MONITOR_BOXES.keys()))
     exit()
 
-platform = args[0]
+platform, event = args
 if platform not in MODEL_MONITOR_BOXES.keys():
-    print('Invalid platform. Available platforms: ', ', '.join(MODEL_MONITOR_BOXES.keys()))
+    print('Invalid platform. Available platforms:', ', '.join(MODEL_MONITOR_BOXES.keys()))
     exit()
 
-MODEL_MONITOR_BOX = MODEL_MONITOR_BOXES[platform]
+if event not in MODEL_MONITOR_BOXES[platform].keys():
+    print('Invalid event. Available events:', ', '.join(MODEL_MONITOR_BOXES[platform].keys()))
+    exit()
+
+MODEL_MONITOR_BOX = MODEL_MONITOR_BOXES[platform][event]
 
 def set_system_mute(muted):
     if OS_NAME == 'win32':
@@ -58,6 +67,8 @@ with mss() as sct:
     while True:
         sct_img = sct.grab(client_monitor_box)
         png = mss_tools.to_png(sct_img.rgb, sct_img.size)
+        # mss_tools.to_png(sct_img.rgb, sct_img.size, output=os.path.join(f"result.png"))
+        # break
         nparr = np.frombuffer(png, np.uint8)
         img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)[...,::-1] #convert BGR to RGB format
         resized_arr = cv2.resize(img_np, (img_size, img_size)) # Reshaping images to preferred size
