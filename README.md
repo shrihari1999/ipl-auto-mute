@@ -21,7 +21,7 @@ pipenv install
 
 Run the program, pass platform as first arg, event as second arg.
 Available platforms: hotstar, jio
-Available events: ipl, wc
+Available events: ipl, wc, test
 ```
 # python run.py <platform>
 python run.py jio

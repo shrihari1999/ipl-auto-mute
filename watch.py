@@ -13,7 +13,8 @@ MODEL_MONITOR_BOXES = {
         'wc': {'top': 85, 'left': 85, 'width': 110, 'height': 90}
     },
     'jio': {
-        'ipl': {'top': 85, 'left': 75, 'width': 110, 'height': 90}
+        'ipl': {'top': 85, 'left': 75, 'width': 110, 'height': 90},
+        'test': {'top': 75, 'left': 32, 'width': 90, 'height': 90}
     },
 }
 
@@ -105,9 +106,9 @@ with mss() as sct:
 #         'width': round(width_factor * MODEL_MONITOR_BOX['width']),
 #         'height': round(height_factor * MODEL_MONITOR_BOX['height'])
 #     }
-#     print(client_monitor_box)
 #     for i in range(0, 300):
 #         sct_img = sct.grab(client_monitor_box)
 #         mss_tools.to_png(sct_img.rgb, sct_img.size, output=os.path.join(os.path.join(BASE_DIR, 'results'), f"result{i+1}.png"))
 #         time.sleep(1)
-#     set_system_volume(0)
+#     muted = True
+#     set_system_mute(muted)
