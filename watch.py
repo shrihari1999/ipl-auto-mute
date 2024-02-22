@@ -2,6 +2,7 @@ from pathlib import Path
 from mss import mss, tools as mss_tools
 from tensorflow import keras
 from collections import deque
+from threading import Thread, Event
 import os, sys, time, cv2, numpy as np
 
 OS_NAME = sys.platform
@@ -50,10 +51,24 @@ muted = False
 set_system_mute(muted)
 prediction_queue = deque(maxlen=3)
 max_reached = False
+paused = Event()
+
+def get_input():
+    input_from_user = input()
+    if input_from_user == 'p':
+        print('Pausing...')
+        paused.set()
+    elif input_from_user == 'r':
+        print('Resuming...')
+        paused.clear()
+    get_input()
 
 print('Waiting 5 secs, open the match window in full screen.')
 time.sleep(5)
 print('Program is active. Sit back, relax and enjoy the game!')
+print('Press p - pause, r - resume')
+input_thread = Thread(target=get_input)
+input_thread.start()
 with mss() as sct:
     monitor = sct.monitors[0]
     height_correction = -35 if monitor['width'] / monitor['height'] > 1.7 else 0
@@ -66,6 +81,10 @@ with mss() as sct:
         'height': round(height_factor * MODEL_MONITOR_BOX['height'])
     }
     while True:
+        if paused.is_set():
+            time.sleep(1)
+            continue
+        
         sct_img = sct.grab(client_monitor_box)
         png = mss_tools.to_png(sct_img.rgb, sct_img.size)
         # mss_tools.to_png(sct_img.rgb, sct_img.size, output=os.path.join(f"result.png"))

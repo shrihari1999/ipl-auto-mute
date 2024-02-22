@@ -23,6 +23,11 @@ Run the program, pass platform as first arg, event as second arg.
 Available platforms: hotstar, jio
 Available events: ipl, wc, test
 ```
-# python run.py <platform>
-python run.py jio
+# python run.py <platform> <event>
+python run.py jio test
 ```
+
+When the program is running, it is possible to control it using inputs
+Available controls:
+p - Pause the program
+r - Resume the program
